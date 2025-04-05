@@ -10,6 +10,13 @@ class CodeEditor {
         this.setupMonacoEditor();
         this.loadPrograms();
         this.currentView = 'list';
+        
+        // Add resize observer for editor
+        this.resizeObserver = new ResizeObserver(() => {
+            if (this.editor) {
+                this.editor.layout();
+            }
+        });
     }
 
     initializeElements() {
@@ -21,6 +28,7 @@ class CodeEditor {
         this.listViewBtn = document.getElementById('list-view');
         this.editor = null;
         this.currentFile = null;
+        this.monacoContainer = document.getElementById('monaco-editor');
     }
 
     setupEventListeners() {
@@ -64,12 +72,15 @@ class CodeEditor {
             }
         });
 
-        // Window resize handler for editor
+        // Window resize handler
         window.addEventListener('resize', () => {
             if (this.editor) {
                 this.editor.layout();
             }
         });
+
+        // Observe editor container size changes
+        this.resizeObserver.observe(this.monacoContainer);
     }
 
     async setupMonacoEditor() {
@@ -242,16 +253,25 @@ class CodeEditor {
             document.getElementById('editor-title').textContent = file.name;
             document.getElementById('file-path').textContent = file.path;
 
+            // Show modal first
+            this.editorModal.style.display = 'block';
+            document.body.classList.add('modal-open');
+
+            // Dispose existing editor if any
             if (this.editor) {
                 this.editor.dispose();
             }
 
-            const container = document.getElementById('monaco-editor');
-            this.editor = this.createEditor(container, code);
+            // Create new editor
+            this.editor = this.createEditor(this.monacoContainer, code);
             
-            this.editorModal.style.display = 'block';
-            this.editor.focus();
+            // Force layout update
+            setTimeout(() => {
+                this.editor.layout();
+                this.editor.focus();
+            }, 100);
 
+            // Track cursor position
             this.editor.onDidChangeCursorPosition(e => {
                 const position = e.position;
                 document.getElementById('cursor-position').textContent = 
@@ -274,7 +294,7 @@ class CodeEditor {
             theme: theme,
             automaticLayout: true,
             minimap: { enabled: true },
-            scrollBeyondLastLine: false,
+            scrollBeyondLastLine: true,
             fontSize: 14,
             lineNumbers: 'on',
             renderLineHighlight: 'all',
@@ -285,21 +305,26 @@ class CodeEditor {
             scrollbar: {
                 vertical: 'visible',
                 horizontal: 'visible',
-                useShadows: false,
+                useShadows: true,
                 verticalHasArrows: true,
-                horizontalHasArrows: true
+                horizontalHasArrows: true,
+                verticalScrollbarSize: 15,
+                horizontalScrollbarSize: 15
             },
-            suggest: {
-                snippetsPreventQuickSuggestions: false
-            }
+            fixedOverflowWidgets: true,
+            overviewRulerLanes: 0,
+            overviewRulerBorder: false,
+            hideCursorInOverviewRuler: true
         });
     }
 
     closeEditor() {
-        this.editorModal.style.display = 'none';
         if (this.editor) {
             this.editor.dispose();
+            this.editor = null;
         }
+        this.editorModal.style.display = 'none';
+        document.body.classList.remove('modal-open');
     }
 
     async saveChanges() {

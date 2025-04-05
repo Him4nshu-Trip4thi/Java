@@ -46,6 +46,10 @@ body {
     height: 100vh;
 }
 
+body.modal-open {
+    overflow: hidden;
+}
+
 /* Sidenav Styles */
 .sidenav {
     width: 250px;
@@ -317,8 +321,8 @@ body {
 .editor-content {
     position: relative;
     width: 90%;
-    height: 90%;
-    margin: 2.5vh auto;
+    height: 90vh;
+    margin: 5vh auto;
     background: var(--card-background);
     border-radius: 0.5rem;
     display: flex;
@@ -363,7 +367,13 @@ body {
 
 .editor-container {
     flex: 1;
+    position: relative;
     overflow: hidden;
+}
+
+#monaco-editor {
+    width: 100%;
+    height: 100%;
 }
 
 .editor-footer {
@@ -374,27 +384,24 @@ body {
     border-top: 1px solid var(--border-color);
 }
 
-/* Loading Animation */
-.loading {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem;
-    gap: 1rem;
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
 }
 
-.spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid var(--border-color);
-    border-top-color: var(--primary-color);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+::-webkit-scrollbar-track {
+    background: var(--card-background);
 }
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 6px;
+    border: 3px solid var(--card-background);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
 }
 
 /* Toast Notifications */
@@ -429,23 +436,27 @@ body {
     }
 }
 
-/* Error Message */
-.error-message {
-    text-align: center;
-    padding: 2rem;
-    background: var(--card-background);
-    border-radius: 0.5rem;
-    border: 1px solid var(--border-color);
-    margin: 2rem auto;
-    max-width: 500px;
-    box-shadow: var(--card-shadow);
+/* Loading Animation */
+.loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    gap: 1rem;
 }
 
-.error-actions {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    margin-top: 1.5rem;
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--border-color);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
 /* Responsive Design */
