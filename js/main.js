@@ -131,7 +131,7 @@ class CodeEditor {
                 </div>
             `;
 
-            const apiUrl = `https://api.github.com/repos/${this.repoDetails.owner}/${this.repoDetails.repo}/contents/programs`;
+            const apiUrl = `https://api.github.com/repos/${this.repoDetails.owner}/${this.repoDetails.repo}/contents/programs/`;
             console.log('Fetching from:', apiUrl);
             
             const response = await fetch(apiUrl);
