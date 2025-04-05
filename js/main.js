@@ -109,7 +109,7 @@ class CodeEditor {
 
     async loadPrograms() {
         try {
-            const apiUrl = `https://api.github.com/repos/${this.repoDetails.owner}/${this.repoDetails.repo}/contents/programs?ref=${this.repoDetails.branch}`;
+            const apiUrl = `https://api.github.com/repos/${this.repoDetails.owner}/${this.repoDetails.repo}/contents/programs`;
             const response = await fetch(apiUrl);
             
             if (!response.ok) {
