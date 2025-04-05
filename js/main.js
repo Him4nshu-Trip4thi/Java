@@ -10,13 +10,6 @@ class CodeEditor {
         this.setupMonacoEditor();
         this.loadPrograms();
         this.currentView = 'list';
-        
-        // Add resize observer for editor
-        this.resizeObserver = new ResizeObserver(() => {
-            if (this.editor) {
-                this.editor.layout();
-            }
-        });
     }
 
     initializeElements() {
@@ -26,33 +19,33 @@ class CodeEditor {
         this.searchInput = document.getElementById('search-input');
         this.gridViewBtn = document.getElementById('grid-view');
         this.listViewBtn = document.getElementById('list-view');
+        this.monacoContainer = document.getElementById('monaco-editor');
         this.editor = null;
         this.currentFile = null;
-        this.monacoContainer = document.getElementById('monaco-editor');
     }
 
     setupEventListeners() {
         // Theme toggle
-        this.themeToggle.addEventListener('click', () => this.toggleTheme());
+        this.themeToggle?.addEventListener('click', () => this.toggleTheme());
 
         // View toggle
-        this.gridViewBtn.addEventListener('click', () => this.changeView('grid'));
-        this.listViewBtn.addEventListener('click', () => this.changeView('list'));
+        this.gridViewBtn?.addEventListener('click', () => this.changeView('grid'));
+        this.listViewBtn?.addEventListener('click', () => this.changeView('list'));
 
         // Search
-        this.searchInput.addEventListener('input', (e) => this.handleSearch(e.target.value));
+        this.searchInput?.addEventListener('input', (e) => this.handleSearch(e.target.value));
 
         // Editor modal close
-        document.getElementById('close-editor').addEventListener('click', () => this.closeEditor());
+        document.getElementById('close-editor')?.addEventListener('click', () => this.closeEditor());
 
         // Save button
-        document.getElementById('save-btn').addEventListener('click', () => this.saveChanges());
+        document.getElementById('save-btn')?.addEventListener('click', () => this.saveChanges());
 
         // Copy button
-        document.getElementById('copy-btn').addEventListener('click', () => this.copyCode());
+        document.getElementById('copy-btn')?.addEventListener('click', () => this.copyCode());
 
         // Run button
-        document.getElementById('run-btn').addEventListener('click', () => this.runCode());
+        document.getElementById('run-btn')?.addEventListener('click', () => this.runCode());
 
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
@@ -78,16 +71,18 @@ class CodeEditor {
                 this.editor.layout();
             }
         });
-
-        // Observe editor container size changes
-        this.resizeObserver.observe(this.monacoContainer);
     }
 
     async setupMonacoEditor() {
         try {
-            await new Promise(resolve => require(['vs/editor/editor.main'], resolve));
+            await new Promise(resolve => {
+                if (typeof monaco === 'undefined') {
+                    require(['vs/editor/editor.main'], resolve);
+                } else {
+                    resolve();
+                }
+            });
 
-            // Define custom themes
             monaco.editor.defineTheme('customDark', {
                 base: 'vs-dark',
                 inherit: true,
@@ -129,8 +124,14 @@ class CodeEditor {
 
     async loadPrograms() {
         try {
-            const apiUrl = `https://api.github.com/repos/${this.repoDetails.owner}/${this.repoDetails.repo}/contents?ref=${this.repoDetails.branch}`;
-            
+            this.programsContainer.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading programs...</p>
+                </div>
+            `;
+
+            const apiUrl = `https://api.github.com/repos/${this.repoDetails.owner}/${this.repoDetails.repo}/contents`;
             console.log('Fetching from:', apiUrl);
             
             const response = await fetch(apiUrl);
@@ -140,11 +141,19 @@ class CodeEditor {
             }
             
             const data = await response.json();
-            console.log('Received data:', data);
+            const javaFiles = data.filter(file => file.name.endsWith('.java'));
             
-            const javaFiles = await this.processFiles(data);
-            console.log('Processed Java files:', javaFiles);
-            
+            if (javaFiles.length === 0) {
+                this.programsContainer.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-folder-open"></i>
+                        <h3>No Java Programs Found</h3>
+                        <p>No Java files found in the repository</p>
+                    </div>
+                `;
+                return;
+            }
+
             this.renderPrograms(javaFiles);
         } catch (error) {
             console.error('Error loading programs:', error);
@@ -167,44 +176,8 @@ class CodeEditor {
         }
     }
 
-    async processFiles(items, path = '') {
-        let javaFiles = [];
-        
-        for (const item of items) {
-            if (item.type === 'file' && item.name.endsWith('.java')) {
-                javaFiles.push({
-                    ...item,
-                    fullPath: path + item.name
-                });
-            } else if (item.type === 'dir') {
-                try {
-                    const response = await fetch(item.url);
-                    const dirContents = await response.json();
-                    const subFiles = await this.processFiles(dirContents, `${path}${item.name}/`);
-                    javaFiles = javaFiles.concat(subFiles);
-                } catch (error) {
-                    console.error(`Error processing directory ${item.name}:`, error);
-                }
-            }
-        }
-        
-        return javaFiles;
-    }
-
     renderPrograms(programs) {
         this.programsContainer.innerHTML = '';
-        
-        if (programs.length === 0) {
-            this.programsContainer.innerHTML = `
-                <div class="error-message">
-                    <i class="fas fa-folder-open"></i>
-                    <h3>No Java Programs Found</h3>
-                    <p>Add some Java programs to get started</p>
-                </div>
-            `;
-            return;
-        }
-
         programs.forEach(file => {
             const card = this.createProgramCard(file);
             this.programsContainer.appendChild(card);
@@ -215,14 +188,9 @@ class CodeEditor {
         const card = document.createElement('div');
         card.className = 'program-card';
         
-        const pathParts = file.fullPath.split('/');
-        const fileName = pathParts.pop();
-        const folderPath = pathParts.join('/');
-        
         card.innerHTML = `
             <div class="card-content">
-                <h3 title="${fileName}">${fileName}</h3>
-                ${folderPath ? `<p class="file-path"><i class="fas fa-folder"></i> ${folderPath}</p>` : ''}
+                <h3 title="${file.name}">${file.name}</h3>
                 <div class="card-actions">
                     <span class="file-size">
                         <i class="fas fa-file-code"></i>
@@ -253,25 +221,20 @@ class CodeEditor {
             document.getElementById('editor-title').textContent = file.name;
             document.getElementById('file-path').textContent = file.path;
 
-            // Show modal first
             this.editorModal.style.display = 'block';
             document.body.classList.add('modal-open');
 
-            // Dispose existing editor if any
             if (this.editor) {
                 this.editor.dispose();
             }
 
-            // Create new editor
             this.editor = this.createEditor(this.monacoContainer, code);
             
-            // Force layout update
             setTimeout(() => {
                 this.editor.layout();
                 this.editor.focus();
             }, 100);
 
-            // Track cursor position
             this.editor.onDidChangeCursorPosition(e => {
                 const position = e.position;
                 document.getElementById('cursor-position').textContent = 
@@ -284,14 +247,10 @@ class CodeEditor {
     }
 
     createEditor(container, value) {
-        const theme = document.documentElement.getAttribute('data-theme') === 'dark' 
-            ? 'customDark' 
-            : 'customLight';
-
         return monaco.editor.create(container, {
             value: value,
             language: 'java',
-            theme: theme,
+            theme: document.documentElement.getAttribute('data-theme') === 'dark' ? 'customDark' : 'customLight',
             automaticLayout: true,
             minimap: { enabled: true },
             scrollBeyondLastLine: true,
@@ -310,11 +269,7 @@ class CodeEditor {
                 horizontalHasArrows: true,
                 verticalScrollbarSize: 15,
                 horizontalScrollbarSize: 15
-            },
-            fixedOverflowWidgets: true,
-            overviewRulerLanes: 0,
-            overviewRulerBorder: false,
-            hideCursorInOverviewRuler: true
+            }
         });
     }
 
@@ -327,31 +282,14 @@ class CodeEditor {
         document.body.classList.remove('modal-open');
     }
 
-    async saveChanges() {
-        try {
-            const content = this.editor.getValue();
-            // Implement your save logic here
-            this.showToast('Changes saved successfully', 'success');
-        } catch (error) {
-            console.error('Error saving changes:', error);
-            this.showToast('Error saving changes', 'error');
-        }
-    }
-
     async copyCode() {
         try {
             const code = this.editor.getValue();
             await navigator.clipboard.writeText(code);
             this.showToast('Code copied to clipboard', 'success');
         } catch (error) {
-            console.error('Error copying code:', error);
-            this.showToast('Error copying code', 'error');
+            this.showToast('Failed to copy code', 'error');
         }
-    }
-
-    runCode() {
-        // Implement code execution logic here
-        this.showToast('Code execution not implemented', 'info');
     }
 
     toggleTheme() {
@@ -388,8 +326,7 @@ class CodeEditor {
 
         Array.from(cards).forEach(card => {
             const title = card.querySelector('h3').textContent.toLowerCase();
-            const path = card.querySelector('.file-path')?.textContent.toLowerCase() || '';
-            card.style.display = title.includes(query) || path.includes(query) ? '' : 'none';
+            card.style.display = title.includes(query) ? '' : 'none';
         });
     }
 
@@ -425,21 +362,26 @@ class CodeEditor {
     }
 }
 
-// Initialize theme from localStorage and start the app
+// Initialize the app
 document.addEventListener('DOMContentLoaded', () => {
     try {
         document.documentElement.setAttribute('data-theme', 
             localStorage.getItem('theme') || 'dark');
         
-        new CodeEditor();
+        window.codeEditor = new CodeEditor();
     } catch (error) {
         console.error('Initialization error:', error);
-        document.body.innerHTML = `
+        const container = document.getElementById('programs-container') || document.body;
+        container.innerHTML = `
             <div class="error-message">
                 <i class="fas fa-exclamation-circle"></i>
                 <h3>Failed to initialize application</h3>
                 <p>${error.message}</p>
-                <button onclick="location.reload()">Reload Page</button>
+                <div class="error-actions">
+                    <button onclick="location.reload()" class="retry-btn">
+                        <i class="fas fa-sync-alt"></i> Try Again
+                    </button>
+                </div>
             </div>
         `;
     }
