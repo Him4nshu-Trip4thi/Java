@@ -43,10 +43,7 @@ body {
     transition: background-color 0.3s, color 0.3s;
     display: flex;
     overflow: hidden;
-<<<<<<< HEAD
     height: 100vh;
-=======
->>>>>>> 760c4f2b5e339afea3070b9c40a397e14cd12cc5
 }
 
 /* Sidenav Styles */
@@ -58,10 +55,7 @@ body {
     padding: 1rem;
     display: flex;
     flex-direction: column;
-<<<<<<< HEAD
     transition: width 0.3s ease;
-=======
->>>>>>> 760c4f2b5e339afea3070b9c40a397e14cd12cc5
 }
 
 .sidenav-header {
@@ -72,7 +66,6 @@ body {
 }
 
 .logo {
-<<<<<<< HEAD
     background-color: var(--primary-color);
     width: 40px;
     height: 40px;
@@ -82,29 +75,18 @@ body {
     justify-content: center;
     color: white;
     font-weight: bold;
-=======
-    width: 32px;
-    height: 32px;
->>>>>>> 760c4f2b5e339afea3070b9c40a397e14cd12cc5
     margin-right: 1rem;
 }
 
 .logo-text {
     font-size: 1.25rem;
     font-weight: 600;
-<<<<<<< HEAD
     color: var(--text-color);
-=======
-    color: var(--primary-color);
->>>>>>> 760c4f2b5e339afea3070b9c40a397e14cd12cc5
 }
 
 .nav-items {
     flex: 1;
-<<<<<<< HEAD
     margin-bottom: 2rem;
-=======
->>>>>>> 760c4f2b5e339afea3070b9c40a397e14cd12cc5
 }
 
 .nav-items a {
@@ -136,19 +118,10 @@ body {
 /* Main Content Styles */
 .main-content {
     flex: 1;
-<<<<<<< HEAD
     padding: 1.5rem;
     overflow-y: auto;
 }
 
-=======
-    height: 100vh;
-    overflow-y: auto;
-    padding: 1.5rem;
-}
-
-/* Top Bar Styles */
->>>>>>> 760c4f2b5e339afea3070b9c40a397e14cd12cc5
 .top-bar {
     display: flex;
     justify-content: space-between;
@@ -205,11 +178,7 @@ body {
     border-color: var(--primary-color);
 }
 
-<<<<<<< HEAD
 /* Programs Container */
-=======
-/* Programs Grid/List View */
->>>>>>> 760c4f2b5e339afea3070b9c40a397e14cd12cc5
 .programs-container {
     display: grid;
     gap: 1rem;
@@ -232,10 +201,6 @@ body {
     cursor: pointer;
     transition: all 0.2s;
     position: relative;
-<<<<<<< HEAD
-=======
-    overflow: hidden;
->>>>>>> 760c4f2b5e339afea3070b9c40a397e14cd12cc5
 }
 
 .program-card:hover {
@@ -244,25 +209,6 @@ body {
     border-color: var(--primary-color);
 }
 
-<<<<<<< HEAD
-=======
-.program-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: var(--primary-color);
-    opacity: 0;
-    transition: opacity 0.2s;
-}
-
-.program-card:hover::before {
-    opacity: 1;
-}
-
->>>>>>> 760c4f2b5e339afea3070b9c40a397e14cd12cc5
 .program-card h3 {
     font-size: 1.1rem;
     margin-bottom: 0.5rem;
@@ -272,11 +218,7 @@ body {
     text-overflow: ellipsis;
 }
 
-<<<<<<< HEAD
 /* Editor Modal */
-=======
-/* Editor Modal Styles */
->>>>>>> 760c4f2b5e339afea3070b9c40a397e14cd12cc5
 .editor-modal {
     display: none;
     position: fixed;
@@ -339,13 +281,6 @@ body {
     overflow: hidden;
 }
 
-<<<<<<< HEAD
-=======
-#monaco-editor {
-    height: 100%;
-}
-
->>>>>>> 760c4f2b5e339afea3070b9c40a397e14cd12cc5
 .editor-footer {
     display: flex;
     justify-content: space-between;
@@ -354,7 +289,6 @@ body {
     border-top: 1px solid var(--border-color);
 }
 
-<<<<<<< HEAD
 /* Loading Spinner */
 .loading {
     display: flex;
@@ -377,8 +311,6 @@ body {
     to { transform: rotate(360deg); }
 }
 
-=======
->>>>>>> 760c4f2b5e339afea3070b9c40a397e14cd12cc5
 /* Toast Notifications */
 .toast-container {
     position: fixed;
@@ -409,33 +341,6 @@ body {
         transform: translateX(0);
         opacity: 1;
     }
-<<<<<<< HEAD
-=======
-}
-
-/* Loading Spinner */
-.loading {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-}
-
-.spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid var(--border-color);
-    border-top-color: var(--primary-color);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
->>>>>>> 760c4f2b5e339afea3070b9c40a397e14cd12cc5
 }
 
 /* Responsive Design */
@@ -445,25 +350,18 @@ body {
     }
 
     .logo-text,
-<<<<<<< HEAD
     .nav-items a span,
     .theme-toggle span {
-=======
-    .nav-items a span {
->>>>>>> 760c4f2b5e339afea3070b9c40a397e14cd12cc5
         display: none;
     }
 
     .search-container {
         width: 200px;
-<<<<<<< HEAD
     }
 
     .editor-content {
         width: 95%;
         height: 95%;
         margin: 2.5vh auto;
-=======
->>>>>>> 760c4f2b5e339afea3070b9c40a397e14cd12cc5
     }
 }
