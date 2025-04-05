@@ -3,7 +3,7 @@ class CodeEditor {
         this.repoDetails = {
             owner: 'Him4nshu-Trip4thi', // Replace with your GitHub username
             repo: 'Java',      // Replace with your repository name
-            branch: 'newUI'         // Replace with your branch name
+            branch: 'main'         // Replace with your branch name
         };
         this.initializeElements();
         this.setupEventListeners();
