@@ -1,9 +1,9 @@
 class CodeEditor {
     constructor() {
         this.repoDetails = {
-            owner: 'Him4nshu-Trip4thi', // Replace with your GitHub username
-            repo: 'Java',      // Replace with your repository name
-            branch: 'main'         // Replace with your branch name
+            owner: 'Him4nshu-Trip4thi',
+            repo: 'Java',
+            branch: 'main'
         };
         this.initializeElements();
         this.setupEventListeners();
@@ -52,13 +52,22 @@ class CodeEditor {
                 switch (e.key.toLowerCase()) {
                     case 's':
                         e.preventDefault();
-                        this.saveChanges();
+                        if (this.editor) this.saveChanges();
                         break;
                     case 'e':
                         e.preventDefault();
                         this.closeEditor();
                         break;
                 }
+            } else if (e.key === 'Escape') {
+                this.closeEditor();
+            }
+        });
+
+        // Window resize handler for editor
+        window.addEventListener('resize', () => {
+            if (this.editor) {
+                this.editor.layout();
             }
         });
     }
@@ -109,7 +118,10 @@ class CodeEditor {
 
     async loadPrograms() {
         try {
-            const apiUrl = `https://api.github.com/repos/${this.repoDetails.owner}/${this.repoDetails.repo}/contents/programs`;
+            const apiUrl = `https://api.github.com/repos/${this.repoDetails.owner}/${this.repoDetails.repo}/contents?ref=${this.repoDetails.branch}`;
+            
+            console.log('Fetching from:', apiUrl);
+            
             const response = await fetch(apiUrl);
             
             if (!response.ok) {
@@ -117,27 +129,61 @@ class CodeEditor {
             }
             
             const data = await response.json();
-            this.renderPrograms(data);
+            console.log('Received data:', data);
+            
+            const javaFiles = await this.processFiles(data);
+            console.log('Processed Java files:', javaFiles);
+            
+            this.renderPrograms(javaFiles);
         } catch (error) {
             console.error('Error loading programs:', error);
-            this.showToast('Error loading programs', 'error');
             this.programsContainer.innerHTML = `
                 <div class="error-message">
                     <i class="fas fa-exclamation-circle"></i>
                     <h3>Failed to load programs</h3>
-                    <p>${error.message}</p>
-                    <button onclick="location.reload()">Try Again</button>
+                    <p>Error: ${error.message}</p>
+                    <div class="error-actions">
+                        <button onclick="location.reload()" class="retry-btn">
+                            <i class="fas fa-sync-alt"></i> Try Again
+                        </button>
+                        <a href="https://github.com/${this.repoDetails.owner}/${this.repoDetails.repo}" 
+                           target="_blank" class="view-repo-btn">
+                            <i class="fab fa-github"></i> View Repository
+                        </a>
+                    </div>
                 </div>
             `;
         }
     }
 
+    async processFiles(items, path = '') {
+        let javaFiles = [];
+        
+        for (const item of items) {
+            if (item.type === 'file' && item.name.endsWith('.java')) {
+                javaFiles.push({
+                    ...item,
+                    fullPath: path + item.name
+                });
+            } else if (item.type === 'dir') {
+                try {
+                    const response = await fetch(item.url);
+                    const dirContents = await response.json();
+                    const subFiles = await this.processFiles(dirContents, `${path}${item.name}/`);
+                    javaFiles = javaFiles.concat(subFiles);
+                } catch (error) {
+                    console.error(`Error processing directory ${item.name}:`, error);
+                }
+            }
+        }
+        
+        return javaFiles;
+    }
+
     renderPrograms(programs) {
         this.programsContainer.innerHTML = '';
         
-        const javaPrograms = programs.filter(file => file.name.endsWith('.java'));
-        
-        if (javaPrograms.length === 0) {
+        if (programs.length === 0) {
             this.programsContainer.innerHTML = `
                 <div class="error-message">
                     <i class="fas fa-folder-open"></i>
@@ -148,7 +194,7 @@ class CodeEditor {
             return;
         }
 
-        javaPrograms.forEach(file => {
+        programs.forEach(file => {
             const card = this.createProgramCard(file);
             this.programsContainer.appendChild(card);
         });
@@ -157,12 +203,25 @@ class CodeEditor {
     createProgramCard(file) {
         const card = document.createElement('div');
         card.className = 'program-card';
+        
+        const pathParts = file.fullPath.split('/');
+        const fileName = pathParts.pop();
+        const folderPath = pathParts.join('/');
+        
         card.innerHTML = `
-            <h3 title="${file.name}">${file.name}</h3>
-            <p>Click to edit</p>
-            <div class="card-actions">
-                <span class="file-size">${this.formatFileSize(file.size)}</span>
-                <span class="file-type">Java</span>
+            <div class="card-content">
+                <h3 title="${fileName}">${fileName}</h3>
+                ${folderPath ? `<p class="file-path"><i class="fas fa-folder"></i> ${folderPath}</p>` : ''}
+                <div class="card-actions">
+                    <span class="file-size">
+                        <i class="fas fa-file-code"></i>
+                        ${this.formatFileSize(file.size)}
+                    </span>
+                    <button class="view-btn">
+                        <i class="fas fa-code"></i>
+                        View Code
+                    </button>
+                </div>
             </div>
         `;
         
@@ -247,7 +306,6 @@ class CodeEditor {
         try {
             const content = this.editor.getValue();
             // Implement your save logic here
-            // For GitHub, you'll need to use the GitHub API with authentication
             this.showToast('Changes saved successfully', 'success');
         } catch (error) {
             console.error('Error saving changes:', error);
@@ -305,7 +363,8 @@ class CodeEditor {
 
         Array.from(cards).forEach(card => {
             const title = card.querySelector('h3').textContent.toLowerCase();
-            card.style.display = title.includes(query) ? '' : 'none';
+            const path = card.querySelector('.file-path')?.textContent.toLowerCase() || '';
+            card.style.display = title.includes(query) || path.includes(query) ? '' : 'none';
         });
     }
 
@@ -341,10 +400,9 @@ class CodeEditor {
     }
 }
 
-// Initialize theme from localStorage
+// Initialize theme from localStorage and start the app
 document.addEventListener('DOMContentLoaded', () => {
     try {
-        // Set theme before initialization
         document.documentElement.setAttribute('data-theme', 
             localStorage.getItem('theme') || 'dark');
         
