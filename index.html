@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSA Java Programs</title>
+    
+    <!-- Prism CSS from CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <!-- Your custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-content">
+            <h1>DSA Java Programs</h1>
+            <div class="nav-buttons">
+                <button id="theme-toggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <div class="programs-grid">
+            <!-- Programs will be dynamically loaded here -->
+        </div>
+    </main>
+
+    <!-- Program Modal -->
+    <div id="program-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modal-title"></h2>
+            <div class="code-container">
+                <button class="copy-btn">
+                    <i class="fas fa-copy"></i>
+                </button>
+                <pre><code class="language-java" id="code-block"></code></pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
