@@ -25,29 +25,21 @@ class CodeEditor {
     }
 
     setupEventListeners() {
-        // Theme toggle
         this.themeToggle?.addEventListener('click', () => this.toggleTheme());
 
-        // View toggle
         this.gridViewBtn?.addEventListener('click', () => this.changeView('grid'));
         this.listViewBtn?.addEventListener('click', () => this.changeView('list'));
 
-        // Search
         this.searchInput?.addEventListener('input', (e) => this.handleSearch(e.target.value));
 
-        // Editor modal close
         document.getElementById('close-editor')?.addEventListener('click', () => this.closeEditor());
 
-        // Save button
         document.getElementById('save-btn')?.addEventListener('click', () => this.saveChanges());
 
-        // Copy button
         document.getElementById('copy-btn')?.addEventListener('click', () => this.copyCode());
 
-        // Run button
         document.getElementById('run-btn')?.addEventListener('click', () => this.runCode());
 
-        // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
             if (e.ctrlKey || e.metaKey) {
                 switch (e.key.toLowerCase()) {
@@ -65,7 +57,6 @@ class CodeEditor {
             }
         });
 
-        // Window resize handler
         window.addEventListener('resize', () => {
             if (this.editor) {
                 this.editor.layout();
@@ -362,7 +353,6 @@ class CodeEditor {
     }
 }
 
-// Initialize the app
 document.addEventListener('DOMContentLoaded', () => {
     try {
         document.documentElement.setAttribute('data-theme', 
