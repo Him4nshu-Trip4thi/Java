@@ -1,55 +1,125 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DSA Java Programs</title>
     
-    <!-- Prism CSS from CDN -->
+    <!-- Prism CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
-    <!-- Your custom CSS -->
-    <link rel="stylesheet" href="css/style.css">
-    
+    <!-- Monaco Editor -->
+    <link rel="stylesheet" data-name="vs/editor/editor.main" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs/editor/editor.main.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="nav-content">
-            <h1>DSA Java Programs</h1>
-            <div class="nav-buttons">
-                <button id="theme-toggle">
-                    <i class="fas fa-moon"></i>
+    <!-- Side Navigation -->
+    <div class="sidenav">
+        <div class="sidenav-header">
+            <div class="logo">DSA</div>
+            <span class="logo-text">DSA Hub</span>
+        </div>
+        
+        <div class="nav-items">
+            <a href="#Programs" class="active">
+                <i class="fas fa-code"></i>
+                <span>Programs</span>
+            </a>
+            <a href="#Categories">
+                <i class="fas fa-folder"></i>
+                <span>Categories</span>
+            </a>
+            <a href="#Favorites">
+                <i class="fas fa-star"></i>
+                <span>Favorites</span>
+            </a>
+            <a href="#Settings">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+
+        <div class="theme-switcher">
+            <button id="theme-toggle" class="theme-toggle">
+                <i class="fas fa-sun"></i>
+                <span>Light Mode</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="top-bar">
+            <div class="search-container">
+                <i class="fas fa-search"></i>
+                <input type="text" id="search-input" placeholder="Search programs...">
+            </div>
+            <div class="view-options">
+                <button class="view-toggle" id="grid-view" title="Grid View">
+                    <i class="fas fa-th-large"></i>
+                </button>
+                <button class="view-toggle active" id="list-view" title="List View">
+                    <i class="fas fa-list"></i>
                 </button>
             </div>
         </div>
-    </nav>
 
-    <!-- Main Content -->
-    <main>
-        <div class="programs-grid">
-            <!-- Programs will be dynamically loaded here -->
-        </div>
-    </main>
-
-    <!-- Program Modal -->
-    <div id="program-modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2 id="modal-title"></h2>
-            <div class="code-container">
-                <button class="copy-btn">
-                    <i class="fas fa-copy"></i>
-                </button>
-                <pre><code class="language-java" id="code-block"></code></pre>
+        <div class="programs-container" id="programs-container">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Loading programs...</p>
             </div>
         </div>
     </div>
 
+    <!-- Code Editor Modal -->
+    <div id="editor-modal" class="editor-modal">
+        <div class="editor-content">
+            <div class="editor-header">
+                <div class="file-info">
+                    <i class="fas fa-file-code"></i>
+                    <span id="editor-title"></span>
+                </div>
+                <div class="editor-actions">
+                    <button class="action-btn" id="run-btn" title="Run Code">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <button class="action-btn" id="save-btn" title="Save Changes">
+                        <i class="fas fa-save"></i>
+                    </button>
+                    <button class="action-btn" id="copy-btn" title="Copy Code">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                    <button class="action-btn" id="close-editor" title="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="editor-container">
+                <div id="monaco-editor"></div>
+            </div>
+            <div class="editor-footer">
+                <div class="editor-status">
+                    <span class="language">Java</span>
+                    <span class="file-path" id="file-path"></span>
+                </div>
+                <div class="editor-info">
+                    <span class="cursor-position" id="cursor-position">Ln 1, Col 1</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
     <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script>var require = { paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs' } };</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs/loader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs/editor/editor.main.nls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs/editor/editor.main.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>
