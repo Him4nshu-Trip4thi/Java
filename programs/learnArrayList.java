@@ -1,6 +1,6 @@
 import java.util.*;
 import java.util.Collections;
-public class learn {
+public class learnArrayList {
     public static void main (String Args[]){
         ArrayList <Integer> arr = new ArrayList<>();
 
