@@ -3,8 +3,6 @@
 
 A modern, interactive web interface for exploring and managing Data Structures and Algorithms programs written in Java. This platform provides an intuitive way to view, edit, and learn from various DSA implementations.
 
-![DSA Hub Preview](assets/images/preview.png)
-
 ## 🌟 Features
 
 ### Currently Available
@@ -141,7 +139,7 @@ Push to the branch (git push origin feature/AmazingFeature)
 Open a Pull Request
 
 📞 Contact
-Himanshu Tripathi (ig) - @him4nshu_trip4thi
+Himanshu Tripathi : tripathi.himanshu0508@gmail.com
 
 Project Link: https://github.com/Him4nshu-Trip4thi/Java
 
