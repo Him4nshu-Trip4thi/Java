@@ -1,9 +1,9 @@
 # Java
-# DSA Java Programs Hub 🚀
+# DSA Java Programs Hub
 
 A modern, interactive web interface for exploring and managing Data Structures and Algorithms programs written in Java. This platform provides an intuitive way to view, edit, and learn from various DSA implementations.
 
-## 🌟 Features
+##  Features
 
 ### Currently Available
 - **Modern Interface**: Clean and intuitive design with dark/light mode support
@@ -13,7 +13,7 @@ A modern, interactive web interface for exploring and managing Data Structures a
 - **File Information**: Size and path details for each program
 - **Responsive Design**: Works seamlessly across different devices
 
-### Coming Soon 🔜
+### Coming Soon 
 - **Code Execution**: Run Java programs directly in the browser
 - **Interactive Learning Mode**: Step-by-step explanation of algorithms
 - **Complexity Analysis**: Time and space complexity visualization for each algorithm
@@ -29,7 +29,7 @@ A modern, interactive web interface for exploring and managing Data Structures a
 - **Export Options**: Download code in various formats
 - **Integration with IDEs**: Direct IDE plugins
 
-## 🛠️ Technical Stack
+##  Technical Stack
 
 - **Frontend**: HTML5, CSS3, JavaScript (ES6+)
 - **Editor**: Monaco Editor
@@ -38,7 +38,7 @@ A modern, interactive web interface for exploring and managing Data Structures a
 - **Icons**: Font Awesome
 - **Theme**: Custom Dark/Light themes
 
-## 🚀 Future Scope
+##  Future Scope
 
 ### Educational Platform
 - Integration with educational curricula
@@ -61,7 +61,7 @@ A modern, interactive web interface for exploring and managing Data Structures a
 - Best practices sharing
 - Community challenges and competitions
 
-## 🎯 Target Users
+##  Target Users
 
 1. **Students**
    - Learning DSA concepts
@@ -83,7 +83,7 @@ A modern, interactive web interface for exploring and managing Data Structures a
    - Candidate evaluation tools
    - Performance assessment
 
-## 💡 Use Cases
+##  Use Cases
 
 1. **Academic Learning**
    - Structured learning of DSA concepts
@@ -105,7 +105,7 @@ A modern, interactive web interface for exploring and managing Data Structures a
    - Interactive examples
    - Progress tracking
 
-## 🌐 Browser Support
+##  Browser Support
 
 - Chrome (Recommended)
 - Firefox
@@ -113,7 +113,7 @@ A modern, interactive web interface for exploring and managing Data Structures a
 - Edge
 - Opera
 
-## 🔧 Local Development
+##  Local Development
 
 1. Clone the repository:
 ```bash
@@ -142,5 +142,6 @@ Open a Pull Request
 Himanshu Tripathi : tripathi.himanshu0508@gmail.com
 
 Project Link: https://github.com/Him4nshu-Trip4thi/Java
+Visit page: https://him4nshu-trip4thi.github.io/Java/
 
 ⭐️ If you find this project useful, please consider giving it a star!
