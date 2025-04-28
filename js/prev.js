@@ -2,7 +2,7 @@ class CodeEditor {
     constructor() {
         this.repoDetails = {
             owner: 'Him4nshu-Trip4thi',
-            repo: 'programs-for-java-repo',
+            repo: 'Java',
             branch: 'main'
         };
         this.initializeElements();
@@ -122,7 +122,7 @@ class CodeEditor {
                 </div>
             `;
 
-            const apiUrl = `https://api.github.com/repos/${this.repoDetails.owner}/${this.repoDetails.repo}/contents/`;
+            const apiUrl = `https://api.github.com/repos/${this.repoDetails.owner}/${this.repoDetails.repo}/contents/programs/`;
             console.log('Fetching from:', apiUrl);
             
             const response = await fetch(apiUrl);
